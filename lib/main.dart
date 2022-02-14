@@ -121,6 +121,13 @@ class FavoritesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Saved Queries'),
         backgroundColor: Colors.redAccent[700],
+        actions: [
+          // Navigate to the Search Screen
+          IconButton(
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => SearchPage())),
+              icon: Icon(Icons.search))
+        ],
       ),
       body: ListView(
           children: favorites
@@ -178,5 +185,39 @@ class NavigationControls extends StatelessWidget {
             content: Text("No ${goBack ? 'back' : 'forward'} history item")),
       );
     }
+  }
+}
+
+// appbar Search for history
+class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.redAccent[700],
+          // The search area here
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: TextField(
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        /* Clear the search field */
+                      },
+                    ),
+                    hintText: 'Search...',
+                    border: InputBorder.none),
+              ),
+            ),
+          )),
+    );
   }
 }
