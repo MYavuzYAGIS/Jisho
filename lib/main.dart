@@ -49,9 +49,13 @@ class _JishoState extends State<Jisho> {
           return FloatingActionButton(
             onPressed: () async {
               var url = await controller.data?.currentUrl();
-              _favorites.add(url!);
+              String data = '';
+              if (url != null) {
+                data = url.split('keyword=')[1];
+              }
+              _favorites.add(data);
               Scaffold.of(context).showSnackBar(
-                SnackBar(content: Text('Saved $url for later reading.')),
+                SnackBar(content: Text('Saved $data for later reading.')),
               );
             },
             child: Icon(Icons.favorite),
@@ -81,7 +85,7 @@ class Menu extends StatelessWidget {
             if (value == 'Email link') {
               var url = await controller.data?.currentUrl();
               await launch(
-                  'mailto:?subject=Check out this cool Wikipedia page&body=$url');
+                  'mailto:?subject=Check out this cool jisho.org page&body=$url');
             } else {
               var newUrl = await Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -114,12 +118,14 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Saved Queries')),
+      appBar: AppBar(
+        title: Text('Saved Queries'),
+        backgroundColor: Colors.redAccent[700],
+      ),
       body: ListView(
           children: favorites
-              .map((url) => ListTile(
-                  title: Text(url.splitMapJoin("keyword=")[1]),
-                  onTap: () => Navigator.pop(context, url)))
+              .map((data) => ListTile(
+                  title: Text(data), onTap: () => Navigator.pop(context, data)))
               .toList()),
     );
   }
